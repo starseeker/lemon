@@ -21,12 +21,18 @@ mkdir -p "$OLD_DIR" "$NEW_DIR"
 # Compile lemon versions if needed
 if [ ! -x "$REPO_ROOT/lemon" ]; then
     echo "Compiling new lemon..."
-    gcc -o "$REPO_ROOT/lemon" "$REPO_ROOT/lemon.c"
+    if ! gcc -o "$REPO_ROOT/lemon" "$REPO_ROOT/lemon.c"; then
+        echo "✗ Failed to compile new lemon"
+        exit 1
+    fi
 fi
 
 if [ ! -x "$SCRIPT_DIR/lemon_step" ]; then
     echo "Compiling old lemon..."
-    gcc -o "$SCRIPT_DIR/lemon_step" "$SCRIPT_DIR/lemon_step.c"
+    if ! gcc -o "$SCRIPT_DIR/lemon_step" "$SCRIPT_DIR/lemon_step.c"; then
+        echo "✗ Failed to compile old lemon"
+        exit 1
+    fi
 fi
 
 # Test with old lemon
@@ -39,8 +45,13 @@ OLD_RESULT=$?
 
 if [ $OLD_RESULT -eq 0 ] && [ -f expparse.c ] && [ -f expparse.h ]; then
     echo "✓ Old lemon successfully generated parser"
-    OLD_STATES=$(grep -c "^State" expparse.out || echo 0)
-    echo "  States: $OLD_STATES"
+    if [ -f expparse.out ]; then
+        OLD_STATES=$(grep -c "^State" expparse.out 2>/dev/null || echo "0")
+        echo "  States: $OLD_STATES"
+    else
+        echo "⚠ Warning: expparse.out not generated"
+        OLD_STATES="unknown"
+    fi
 else
     echo "✗ Old lemon failed with exit code $OLD_RESULT"
     exit 1
@@ -57,8 +68,13 @@ NEW_RESULT=$?
 
 if [ $NEW_RESULT -eq 0 ] && [ -f expparse.c ] && [ -f expparse.h ]; then
     echo "✓ New lemon successfully generated parser"
-    NEW_STATES=$(grep -c "^State" expparse.out || echo 0)
-    echo "  States: $NEW_STATES (more optimized)"
+    if [ -f expparse.out ]; then
+        NEW_STATES=$(grep -c "^State" expparse.out 2>/dev/null || echo "0")
+        echo "  States: $NEW_STATES (more optimized)"
+    else
+        echo "⚠ Warning: expparse.out not generated"
+        NEW_STATES="unknown"
+    fi
 else
     echo "✗ New lemon failed with exit code $NEW_RESULT"
     exit 1
