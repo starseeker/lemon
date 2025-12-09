@@ -353,10 +353,13 @@ gcc -o myparser main.c parser.c
 - API signatures
 - Zero conflicts
 - Test scripts
+- Full perplex build with RE2C (version 3.1)
+- Perplex tool execution with sample input
+- Scanner generation from perplex input
 
 ⚠️ Not Fully Tested (requires full stepcode/perplex environments):
 - Runtime behavior with real-world inputs
-- Full application integration
+- Full stepcode application integration
 - Memory leak testing
 - Performance benchmarks
 - Error recovery behavior

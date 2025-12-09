@@ -56,7 +56,15 @@ cd perplex
 ./test_lemon.sh
 ```
 
-The perplex grammar is **fully compatible** with the modern lemon version and requires **no modifications**.
+**Full Build and Test:**
+
+```bash
+# Requires: gcc, g++, and re2c (install with: sudo apt install re2c)
+cd perplex
+./build_and_test.sh
+```
+
+The perplex grammar is **fully compatible** with the modern lemon version and requires **no modifications**. The complete perplex tool (including RE2C scanner generation) builds and runs successfully.
 
 ## Documentation
 

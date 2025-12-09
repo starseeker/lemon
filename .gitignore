@@ -1,11 +1,21 @@
 # Compiled binaries
 lemon
 stepcode/lemon_step
+perplex/perplex
+
+# Object files
+*.o
 
 # Generated parser files
 stepcode/expparse.c
 stepcode/expparse.h
 stepcode/expparse.out
+
+# Perplex generated files
+perplex/perplex_parser.c
+perplex/perplex_parser.h
+perplex/perplex_scanner.c
+perplex/test_output.c
 
 # Temporary lempar.c copies
 stepcode/lempar.c
