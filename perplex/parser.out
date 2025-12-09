@@ -1,0 +1,294 @@
+State 0:
+          file ::= * def_section rule_section code_section
+          def_section ::= * string TOKEN_SEPARATOR
+     (29) string ::= *
+          string ::= * string word
+
+                        string shift        9      
+                          file accept
+                   def_section shift        8      
+                     {default} reduce       29     string ::=
+
+State 1:
+     (20) rule_section ::= rule_list *
+          rule_list ::= rule_list * rules
+          rule_list ::= rule_list * start_scope rules end_scope
+          rules ::= * rule
+          rules ::= * rules rule
+          start_scope ::= * TOKEN_START_SCOPE
+          rule ::= * opt_condition pattern_or_name opt_special opt_code
+          rule ::= * empty_condition opt_special opt_code
+      (5) opt_condition ::= *
+          opt_condition ::= * TOKEN_CONDITION
+          empty_condition ::= * TOKEN_EMPTY_COND
+
+              TOKEN_EMPTY_COND shift-reduce 7      empty_condition ::= TOKEN_EMPTY_COND
+               TOKEN_CONDITION shift-reduce 6      opt_condition ::= TOKEN_CONDITION
+                    TOKEN_NAME reduce       5      opt_condition ::=
+             TOKEN_START_SCOPE shift-reduce 1      start_scope ::= TOKEN_START_SCOPE
+                 TOKEN_PATTERN reduce       5      opt_condition ::=
+                         rules shift        4      
+                   start_scope shift        3      
+                          rule shift        4        /* because rule==rules */
+                 opt_condition shift        12     
+               empty_condition shift        5      
+                     {default} reduce       20     rule_section ::= rule_list
+
+State 2:
+          rule_list ::= rule_list start_scope rules * end_scope
+          rules ::= rules * rule
+          end_scope ::= * TOKEN_END_SCOPE
+          rule ::= * opt_condition pattern_or_name opt_special opt_code
+          rule ::= * empty_condition opt_special opt_code
+      (5) opt_condition ::= *
+          opt_condition ::= * TOKEN_CONDITION
+          empty_condition ::= * TOKEN_EMPTY_COND
+
+              TOKEN_EMPTY_COND shift-reduce 7      empty_condition ::= TOKEN_EMPTY_COND
+               TOKEN_CONDITION shift-reduce 6      opt_condition ::= TOKEN_CONDITION
+               TOKEN_END_SCOPE shift-reduce 2      end_scope ::= TOKEN_END_SCOPE
+                     end_scope shift-reduce 23     rule_list ::= rule_list start_scope rules end_scope
+                          rule shift-reduce 25     rules ::= rules rule
+                 opt_condition shift        12     
+               empty_condition shift        5      
+                     {default} reduce       5      opt_condition ::=
+
+State 3:
+          rule_list ::= rule_list start_scope * rules end_scope
+          rules ::= * rule
+          rules ::= * rules rule
+          rule ::= * opt_condition pattern_or_name opt_special opt_code
+          rule ::= * empty_condition opt_special opt_code
+      (5) opt_condition ::= *
+          opt_condition ::= * TOKEN_CONDITION
+          empty_condition ::= * TOKEN_EMPTY_COND
+
+              TOKEN_EMPTY_COND shift-reduce 7      empty_condition ::= TOKEN_EMPTY_COND
+               TOKEN_CONDITION shift-reduce 6      opt_condition ::= TOKEN_CONDITION
+                         rules shift        2      
+                          rule shift        2        /* because rule==rules */
+                 opt_condition shift        12     
+               empty_condition shift        5      
+                     {default} reduce       5      opt_condition ::=
+
+State 4:
+     (22) rule_list ::= rule_list rules *
+          rules ::= rules * rule
+          rule ::= * opt_condition pattern_or_name opt_special opt_code
+          rule ::= * empty_condition opt_special opt_code
+      (5) opt_condition ::= *
+          opt_condition ::= * TOKEN_CONDITION
+          empty_condition ::= * TOKEN_EMPTY_COND
+
+              TOKEN_EMPTY_COND shift-reduce 7      empty_condition ::= TOKEN_EMPTY_COND
+               TOKEN_CONDITION shift-reduce 6      opt_condition ::= TOKEN_CONDITION
+                          rule shift-reduce 25     rules ::= rules rule
+                 opt_condition shift        12     
+               empty_condition shift        5      
+                     {default} reduce       22     rule_list ::= rule_list rules
+
+State 5:
+          rule ::= empty_condition * opt_special opt_code
+      (8) opt_special ::= *
+          opt_special ::= * special
+          special ::= * TOKEN_SPECIAL_OP name_or_def
+
+              TOKEN_SPECIAL_OP shift        10     
+                   opt_special shift        13     
+                       special shift-reduce 9      opt_special ::= special
+                     {default} reduce       8      opt_special ::=
+
+State 6:
+          rule ::= opt_condition pattern_or_name * opt_special opt_code
+      (8) opt_special ::= *
+          opt_special ::= * special
+          special ::= * TOKEN_SPECIAL_OP name_or_def
+
+              TOKEN_SPECIAL_OP shift        10     
+                   opt_special shift        14     
+                       special shift-reduce 9      opt_special ::= special
+                     {default} reduce       8      opt_special ::=
+
+State 7:
+          file ::= def_section rule_section * code_section
+     (15) code_section ::= *
+          code_section ::= * code_section_start string
+          code_section_start ::= * TOKEN_SEPARATOR
+
+               TOKEN_SEPARATOR shift-reduce 16     code_section_start ::= TOKEN_SEPARATOR
+                  code_section shift        18     
+            code_section_start shift        17     
+                     {default} reduce       15     code_section ::=
+
+State 8:
+          file ::= def_section * rule_section code_section
+          rule_section ::= * rule_list
+     (21) rule_list ::= *
+          rule_list ::= * rule_list rules
+          rule_list ::= * rule_list start_scope rules end_scope
+
+                  rule_section shift        7      
+                     rule_list shift        1      
+                     {default} reduce       21     rule_list ::=
+
+State 9:
+          def_section ::= string * TOKEN_SEPARATOR
+          string ::= string * word
+          word ::= * TOKEN_WORD
+
+                    TOKEN_WORD shift-reduce 18     word ::= TOKEN_WORD
+               TOKEN_SEPARATOR shift-reduce 0      def_section ::= string TOKEN_SEPARATOR
+                          word shift-reduce 17     string ::= string word
+
+State 10:
+          special ::= TOKEN_SPECIAL_OP * name_or_def
+          name_or_def ::= * TOKEN_NAME
+          name_or_def ::= * TOKEN_DEFINITION
+
+                    TOKEN_NAME shift-reduce 13     name_or_def ::= TOKEN_NAME
+              TOKEN_DEFINITION shift-reduce 14     name_or_def ::= TOKEN_DEFINITION
+                   name_or_def shift-reduce 10     special ::= TOKEN_SPECIAL_OP name_or_def
+
+State 11:
+          opt_code ::= TOKEN_CODE_START string * TOKEN_CODE_END
+          string ::= string * word
+          word ::= * TOKEN_WORD
+
+                    TOKEN_WORD shift-reduce 18     word ::= TOKEN_WORD
+                TOKEN_CODE_END shift-reduce 27     opt_code ::= TOKEN_CODE_START string TOKEN_CODE_END
+                          word shift-reduce 17     string ::= string word
+
+State 12:
+          rule ::= opt_condition * pattern_or_name opt_special opt_code
+          pattern_or_name ::= * TOKEN_PATTERN
+          pattern_or_name ::= * TOKEN_NAME
+
+                    TOKEN_NAME shift-reduce 12     pattern_or_name ::= TOKEN_NAME
+                 TOKEN_PATTERN shift-reduce 11     pattern_or_name ::= TOKEN_PATTERN
+               pattern_or_name shift        6      
+
+State 13:
+          rule ::= empty_condition opt_special * opt_code
+     (26) opt_code ::= *
+          opt_code ::= * TOKEN_CODE_START string TOKEN_CODE_END
+
+              TOKEN_CODE_START shift        16     
+                      opt_code shift-reduce 4      rule ::= empty_condition opt_special opt_code
+                     {default} reduce       26     opt_code ::=
+
+State 14:
+          rule ::= opt_condition pattern_or_name opt_special * opt_code
+     (26) opt_code ::= *
+          opt_code ::= * TOKEN_CODE_START string TOKEN_CODE_END
+
+              TOKEN_CODE_START shift        16     
+                      opt_code shift-reduce 3      rule ::= opt_condition pattern_or_name opt_special opt_code
+                     {default} reduce       26     opt_code ::=
+
+State 15:
+     (28) code_section ::= code_section_start string *
+          string ::= string * word
+          word ::= * TOKEN_WORD
+
+                    TOKEN_WORD shift-reduce 18     word ::= TOKEN_WORD
+                          word shift-reduce 17     string ::= string word
+                     {default} reduce       28     code_section ::= code_section_start string
+
+State 16:
+          opt_code ::= TOKEN_CODE_START * string TOKEN_CODE_END
+     (29) string ::= *
+          string ::= * string word
+
+                        string shift        11     
+                     {default} reduce       29     string ::=
+
+State 17:
+          code_section ::= code_section_start * string
+     (29) string ::= *
+          string ::= * string word
+
+                        string shift        15     
+                     {default} reduce       29     string ::=
+
+State 18:
+     (19) file ::= def_section rule_section code_section *
+
+                             $ reduce       19     file ::= def_section rule_section code_section
+
+----------------------------------------------------
+Symbols:
+The first-set of non-terminals is shown after the name.
+
+    0: $:
+    1: EMPTY_RULE_LIST (precedence=1)
+    2: TOKEN_WORD (precedence=2)
+    3: TOKEN_CODE_END (precedence=3)
+    4: TOKEN_CODE_START (precedence=4)
+    5: TOKEN_EMPTY_COND (precedence=5)
+    6: TOKEN_CONDITION (precedence=6)
+    7: TOKEN_NAME (precedence=7)
+    8: TOKEN_SEPARATOR
+    9: TOKEN_START_SCOPE
+   10: TOKEN_END_SCOPE
+   11: TOKEN_SPECIAL_OP
+   12: TOKEN_PATTERN
+   13: TOKEN_DEFINITION
+   14: string: <lambda> TOKEN_WORD
+   15: word: TOKEN_WORD
+   16: name_or_def: TOKEN_NAME TOKEN_DEFINITION
+   17: opt_special: <lambda> TOKEN_SPECIAL_OP
+   18: special: TOKEN_SPECIAL_OP
+   19: file: TOKEN_WORD TOKEN_SEPARATOR
+   20: def_section: TOKEN_WORD TOKEN_SEPARATOR
+   21: rule_section: <lambda> TOKEN_EMPTY_COND TOKEN_CONDITION TOKEN_NAME TOKEN_START_SCOPE TOKEN_PATTERN
+   22: code_section: <lambda> TOKEN_SEPARATOR
+   23: rule_list: <lambda> TOKEN_EMPTY_COND TOKEN_CONDITION TOKEN_NAME TOKEN_START_SCOPE TOKEN_PATTERN
+   24: rules: TOKEN_EMPTY_COND TOKEN_CONDITION TOKEN_NAME TOKEN_PATTERN
+   25: start_scope: TOKEN_START_SCOPE
+   26: end_scope: TOKEN_END_SCOPE
+   27: rule: TOKEN_EMPTY_COND TOKEN_CONDITION TOKEN_NAME TOKEN_PATTERN
+   28: opt_condition: <lambda> TOKEN_CONDITION
+   29: pattern_or_name: TOKEN_NAME TOKEN_PATTERN
+   30: opt_code: <lambda> TOKEN_CODE_START
+   31: empty_condition: TOKEN_EMPTY_COND
+   32: code_section_start: TOKEN_SEPARATOR
+----------------------------------------------------
+Syntax-only Symbols:
+The following symbols never carry semantic content.
+
+$ EMPTY_RULE_LIST TOKEN_CODE_END TOKEN_CODE_START TOKEN_EMPTY_COND
+TOKEN_SEPARATOR TOKEN_END_SCOPE string file def_section rule_section
+code_section rule_list rules start_scope end_scope rule opt_condition
+pattern_or_name opt_code empty_condition code_section_start
+----------------------------------------------------
+Rules:
+   0: def_section ::= string TOKEN_SEPARATOR.
+   1: start_scope ::= TOKEN_START_SCOPE.
+   2: end_scope ::= TOKEN_END_SCOPE.
+   3: rule ::= opt_condition pattern_or_name opt_special opt_code.
+   4: rule ::= empty_condition opt_special opt_code.
+   5: opt_condition ::=. [TOKEN_WORD precedence=2]
+   6: opt_condition ::= TOKEN_CONDITION. [TOKEN_WORD precedence=2]
+   7: empty_condition ::= TOKEN_EMPTY_COND. [TOKEN_EMPTY_COND precedence=5]
+   8: opt_special ::=.
+   9: opt_special ::= special.
+  10: special ::= TOKEN_SPECIAL_OP name_or_def.
+  11: pattern_or_name ::= TOKEN_PATTERN.
+  12: pattern_or_name ::= TOKEN_NAME. [TOKEN_NAME precedence=7]
+  13: name_or_def ::= TOKEN_NAME. [TOKEN_NAME precedence=7]
+  14: name_or_def ::= TOKEN_DEFINITION.
+  15: code_section ::=.
+  16: code_section_start ::= TOKEN_SEPARATOR.
+  17: string ::= string word.
+  18: word ::= TOKEN_WORD. [TOKEN_WORD precedence=2]
+  19: file ::= def_section rule_section code_section.
+  20: rule_section ::= rule_list.
+  21: rule_list ::=. [EMPTY_RULE_LIST precedence=1]
+  22: rule_list ::= rule_list rules. [TOKEN_CODE_END precedence=3]
+  23: rule_list ::= rule_list start_scope rules end_scope.
+  24: rules ::= rule.
+  25: rules ::= rules rule.
+  26: opt_code ::=. [TOKEN_CODE_END precedence=3]
+  27: opt_code ::= TOKEN_CODE_START string TOKEN_CODE_END. [TOKEN_CODE_START precedence=4]
+  28: code_section ::= code_section_start string.
+  29: string ::=.
