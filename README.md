@@ -5,9 +5,13 @@ https://sqlite.org/src/file?name=doc/lemon.html
 https://sqlite.org/src/file/tool/lemon.c
 https://sqlite.org/src/file/tool/lempar.c
 
-## Stepcode Integration
+## Project Integration
 
-This repository includes the stepcode Express parser grammar (`stepcode/expparse.y`) which has been verified to work with the new lemon version.
+This repository includes two major integrations that have been verified to work with the modern lemon version:
+
+### Stepcode Integration
+
+The stepcode Express parser grammar (`stepcode/expparse.y`) has been verified to work with the modern lemon version.
 
 ### Quick Start
 
@@ -32,20 +36,34 @@ cd stepcode
 ./test_lemon.sh
 ```
 
-### Documentation
-
-- **[STEPCODE_INTEGRATION.md](STEPCODE_INTEGRATION.md)** - Migration guide and technical details
-- **[TESTING_GUIDE.md](TESTING_GUIDE.md)** - Testing procedures and troubleshooting  
-- **[SCANNER_INTEGRATION.md](SCANNER_INTEGRATION.md)** - Scanner integration guide
-- **[stepcode/README.md](stepcode/README.md)** - Quick reference for stepcode directory
-
 ### Key Finding
 
-The stepcode grammar file is **fully compatible** with the new lemon version and requires **no modifications**. The new version provides:
+The stepcode grammar file is **fully compatible** with the modern lemon version and requires **no modifications**. The new version provides:
 
 - 37% fewer parser states (403 vs 645)
 - Shift-reduce optimizations
 - Better memory management
 - 100% API compatibility
 
-See [STEPCODE_INTEGRATION.md](STEPCODE_INTEGRATION.md) for complete details.
+### Perplex Integration
+
+The perplex scanner-generator tool (`perplex/parser.y`) uses lemon for its own parser and has been verified to work with the modern lemon version.
+
+**Quick Test:**
+
+```bash
+cd perplex
+./test_lemon.sh
+```
+
+The perplex grammar is **fully compatible** with the modern lemon version and requires **no modifications**.
+
+## Documentation
+
+- **[STEPCODE_INTEGRATION.md](STEPCODE_INTEGRATION.md)** - Stepcode migration guide and technical details
+- **[PERPLEX_INTEGRATION.md](PERPLEX_INTEGRATION.md)** - Perplex integration guide and technical details
+- **[TESTING_GUIDE.md](TESTING_GUIDE.md)** - Testing procedures and troubleshooting  
+- **[SCANNER_INTEGRATION.md](SCANNER_INTEGRATION.md)** - Scanner integration guide
+- **[stepcode/README.md](stepcode/README.md)** - Quick reference for stepcode directory
+
+See the individual integration guides for complete details.
