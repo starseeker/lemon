@@ -44,7 +44,8 @@ cp lempar_step.c lempar.c
 ./lemon_step expparse.y
 
 # Compare headers (should be identical)
-diff expparse.h <path-to-new-version>/expparse.h
+# Replace NEW_DIR with actual path to new version output
+diff expparse.h "$NEW_DIR/expparse.h"
 ```
 
 ## Testing with Additional Stepcode Files

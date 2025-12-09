@@ -70,7 +70,11 @@ if [ $NEW_RESULT -eq 0 ] && [ -f expparse.c ] && [ -f expparse.h ]; then
     echo "✓ New lemon successfully generated parser"
     if [ -f expparse.out ]; then
         NEW_STATES=$(grep -c "^State" expparse.out 2>/dev/null || echo "0")
-        echo "  States: $NEW_STATES (more optimized)"
+        if [ "$OLD_STATES" != "unknown" ] && [ "$NEW_STATES" -lt "$OLD_STATES" ]; then
+            echo "  States: $NEW_STATES (more optimized)"
+        else
+            echo "  States: $NEW_STATES"
+        fi
     else
         echo "⚠ Warning: expparse.out not generated"
         NEW_STATES="unknown"
