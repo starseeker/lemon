@@ -1,0 +1,11 @@
+# Compiled binaries
+lemon
+stepcode/lemon_step
+
+# Generated parser files
+stepcode/expparse.c
+stepcode/expparse.h
+stepcode/expparse.out
+
+# Temporary lempar.c copies
+stepcode/lempar.c
