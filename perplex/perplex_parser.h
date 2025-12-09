@@ -1,0 +1,13 @@
+#define EMPTY_RULE_LIST                  1
+#define TOKEN_WORD                       2
+#define TOKEN_CODE_END                   3
+#define TOKEN_CODE_START                 4
+#define TOKEN_EMPTY_COND                 5
+#define TOKEN_CONDITION                  6
+#define TOKEN_NAME                       7
+#define TOKEN_SEPARATOR                  8
+#define TOKEN_START_SCOPE                9
+#define TOKEN_END_SCOPE                 10
+#define TOKEN_SPECIAL_OP                11
+#define TOKEN_PATTERN                   12
+#define TOKEN_DEFINITION                13

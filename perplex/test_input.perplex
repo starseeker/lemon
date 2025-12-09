@@ -1,0 +1,10 @@
+/* Test perplex input file */
+%%
+digit    [0-9]
+letter   [a-zA-Z]
+%%
+{digit}+       { return TOK_NUMBER; }
+{letter}+      { return TOK_IDENTIFIER; }
+[ \t\n]        { /* skip whitespace */ }
+.              { return TOK_ERROR; }
+%%
